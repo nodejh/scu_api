@@ -3,6 +3,18 @@
 四川大学校园 API，具有登录四川大学教务系统、图书馆系统，并获取个人课表、个人信息，获取个人成绩、计算绩点等功能。旨在方便开发者分析利用教务系统。
 
 
+## Quick Start
+
+```
+$ git clone https://github.com/nodejh/scu_api
+$ cd scu_api
+$ npm install
+$ npm start 
+```
+
+
+## API
+
 已实现 API：
 
 + 模拟登录
