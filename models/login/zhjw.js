@@ -2,9 +2,9 @@
 const request = require('superagent');
 const charset = require('superagent-charset');
 const cheerio = require('cheerio');
-const regexp = require('./../lib/regexp');
-const log4js = require('./../conf/log4js');
-const website = require('./../conf/website').zhjw;
+const regexp = require('./../../libs/regexp');
+const log4js = require('./../../conf/log4js');
+const website = require('./../../conf/website').zhjw;
 
 
 const logger = log4js.getLogger('/models/loginZhjw');

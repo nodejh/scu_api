@@ -6,7 +6,7 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 
-const apiZhjw = require('./routes/zjhw');
+const apiZhjw = require('./routes/zhjw');
 const apiLib = require('./routes/lib');
 
 const app = express();

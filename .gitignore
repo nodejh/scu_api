@@ -24,3 +24,7 @@ coverage
 
 # Benchmarking
 benchmarks/graphs
+
+
+# IDEA
+.idea

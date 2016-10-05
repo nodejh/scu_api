@@ -3,22 +3,22 @@
 // ======================
 const express = require('express');
 const log4js = require('./../conf/log4js');
-const loginZhjw = require('./../models/loginZhjw');
+const login = require('./../models/login/zhjw');
 const getCurriculums = require('./../models/getCurriculums');
 const getGrades = require('./../models/getGrades');
 
 
-const logger = log4js.getLogger('/routes/api');
+const logger = log4js.getLogger('/routes/zhjw');
 const router = new express.Router();
 
 
 /**
  * 模拟登陆教务系统
  */
-router.post('/login_zhjw', (req, res) => {
+router.post('/login/zhjw', (req, res) => {
   const number = req.body.number;
   const password = req.body.password;
-  loginZhjw(number, password, (error, cookie) => {
+  login(number, password, (error, cookie) => {
     if (error) {
       logger.error('模拟登陆教务系统失败\n', error);
       return res.json({ error });

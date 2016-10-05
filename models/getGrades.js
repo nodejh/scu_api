@@ -5,7 +5,7 @@ const cheerio = require('cheerio');
 const EventProxy = require('eventproxy');
 const log4js = require('./../conf/log4js');
 const website = require('./../conf/website');
-const caculate = require('./../lib/caculate').caculate;
+const caculate = require('./../libs/caculate').caculate;
 
 
 const logger = log4js.getLogger('/models/getCurriculums');

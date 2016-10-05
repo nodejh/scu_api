@@ -33,7 +33,7 @@ TODO：
 
 ```
 METHOD:  POST
-API:     /api/login_zhjw
+API:     /api/login/zhjw
 
 parameters:
 {
@@ -48,7 +48,7 @@ return:
 }
 
 TEST:
-$ curl localhost:3000/api/login_zhjw -c ./cookie.txt -d 'number=00000000000000&password=000000'
+$ curl localhost:3000/api/login/zhjw -c ./cookie.txt -d 'number=00000000000000&password=000000'
 ```
 
 
