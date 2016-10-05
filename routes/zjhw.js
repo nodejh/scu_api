@@ -1,6 +1,9 @@
+// =====================
+// 教务系统 API
+// ======================
 const express = require('express');
 const log4js = require('./../conf/log4js');
-const login = require('./../models/login');
+const loginZhjw = require('./../models/loginZhjw');
 const getCurriculums = require('./../models/getCurriculums');
 const getGrades = require('./../models/getGrades');
 
@@ -10,20 +13,20 @@ const router = new express.Router();
 
 
 /**
- * 模拟登陆
+ * 模拟登陆教务系统
  */
-router.post('/login', (req, res) => {
+router.post('/login_zhjw', (req, res) => {
   const number = req.body.number;
   const password = req.body.password;
-  login(number, password, (error, cookie) => {
+  loginZhjw(number, password, (error, cookie) => {
     if (error) {
-      logger.error('模拟登陆失败\n', error);
+      logger.error('模拟登陆教务系统失败\n', error);
       return res.json({ error });
     }
 
-    req.session.user = { cookie, number, password };
+    req.session.cookieZhjw = cookie;
     logger.debug('session\n', req.session);
-    return res.json({ code: 0, msg: '登录成功' });
+    return res.json({ code: 0, msg: '登录教务系统成功' });
   });
 });
 
@@ -32,15 +35,10 @@ router.post('/login', (req, res) => {
  * 获取课表
  */
 router.get('/get_curriculums', (req, res) => {
-  if (!req.session.user) {
+  if (!req.session.cookieZhjw) {
     return res.json({ code: 1010, error: '尚未登陆' });
   }
-
-  const cookie = req.session.user.cookie;
-  if (!req.session.user.cookie) {
-    return res.json({ code: 1010, error: '尚未登陆' });
-  }
-
+  const cookie = req.session.cookieZhjw;
   getCurriculums(cookie, (error, data) => {
     if (error) {
       logger.error('获取课表失败\n', error);
@@ -59,15 +57,10 @@ router.get('/get_curriculums', (req, res) => {
  * 获取所有成绩并计算绩点
  */
 router.get('/get_grades', (req, res) => {
-  if (!req.session.user) {
+  if (!req.session.cookieZhjw) {
     return res.json({ code: 1010, error: '尚未登陆' });
   }
-
-  const cookie = req.session.user.cookie;
-  if (!req.session.user.cookie) {
-    return res.json({ code: 1010, error: '尚未登陆' });
-  }
-
+  const cookie = req.session.cookieZhjw;
   getGrades(cookie, (error, data) => {
     if (error) {
       logger.error('获取课表失败\n', error);
@@ -82,5 +75,4 @@ router.get('/get_grades', (req, res) => {
 });
 
 
-// 获取课表
 module.exports = router;

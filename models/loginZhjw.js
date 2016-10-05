@@ -1,13 +1,13 @@
-// 模拟登录
+// 模拟登录教务系统
 const request = require('superagent');
 const charset = require('superagent-charset');
 const cheerio = require('cheerio');
 const regexp = require('./../lib/regexp');
 const log4js = require('./../conf/log4js');
-const website = require('./../conf/website');
+const website = require('./../conf/website').zhjw;
 
 
-const logger = log4js.getLogger('/models/login');
+const logger = log4js.getLogger('/models/loginZhjw');
 charset(request);
 
 
@@ -19,7 +19,7 @@ charset(request);
  * @param  {Function} callback 登录成功后的回调函数
  * @return {object}   cookie   错误信息和cookie
  */
-function login(number, password, callback) {
+function loginZhjw(number, password, callback) {
   logger.debug('number && password\n', number, password);
 
   if (!regexp.number.test(number)) {
@@ -43,7 +43,7 @@ function login(number, password, callback) {
         detail: errLogin,
       });
     }
-
+    logger.debug(resLogin);
     // 判断是否登陆成功
     const $ = cheerio.load(resLogin.text, {
       ignoreWhitespace: true,
@@ -67,4 +67,4 @@ function login(number, password, callback) {
 }
 
 
-module.exports = login;
+module.exports = loginZhjw;

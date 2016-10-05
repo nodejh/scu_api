@@ -9,7 +9,7 @@
 $ git clone https://github.com/nodejh/scu_api
 $ cd scu_api
 $ npm install
-$ npm start 
+$ npm start
 ```
 
 
@@ -24,9 +24,7 @@ $ npm start
 
 TODO：
 
-+ 个人信息查询
 + 考表查询
-+ 空闲教室查询
 + 借阅图书查询及图书续借
 + (一键评教)
 
@@ -35,7 +33,7 @@ TODO：
 
 ```
 METHOD:  POST
-API:     /api/login
+API:     /api/login_zhjw
 
 parameters:
 {
@@ -50,7 +48,7 @@ return:
 }
 
 TEST:
-$ curl localhost:3000/api/login -c ./cookie.txt -d 'number=00000000000000&password=000000'
+$ curl localhost:3000/api/login_zhjw -c ./cookie.txt -d 'number=00000000000000&password=000000'
 ```
 
 
@@ -207,3 +205,5 @@ $ curl -b ./cookie.txt localhost:3000/api/get_curriculums
 + 1013 获取当前学期成绩错误
 + 1014 获取所有及格成绩错误
 + 1015 获取所有不及格成绩错误
++ 1016 模拟登陆图书馆失败
++ 1017 模拟登陆图书馆失败，可能是学号或密码错误
