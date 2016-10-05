@@ -1,7 +1,6 @@
 // 模拟登录图书馆
 const request = require('superagent');
 const charset = require('superagent-charset');
-const cheerio = require('cheerio');
 const regexp = require('./../lib/regexp');
 const log4js = require('./../conf/log4js');
 const website = require('./../conf/website').lib;
@@ -23,61 +22,56 @@ function loginLib(number, password, callback) {
   }
 
   const data = {
-    __EVENTTARGET: '',
-    __EVENTARGUMENT: '',
-    __VIEWSTATE: website.request.VIEWSTATE,
-    __VIEWSTATEGENERATOR: website.request.VIEWSTATEGENERATOR,
-    'LoginView_user:readercode_txt': number,
-    'LoginView_user:readerpsd_txt': password,
-    'LoginView_user:reader_login.x': website.request.reader_login_x,
-    'LoginView_user:reader_login.y': website.request.reader_login_y,
+    schoolid: website.schoolid,
+    backurl: '',
+    userType: 0,
+    username: number,
+    password,
   };
+  logger.debug('模拟登录 url：', `${website.url.login}`);
+  logger.debug('data: ', data);
   request
-    .post(`${website.url.login}`)
-    .send(data)
-    .set('Content-Type', 'application/x-www-form-urlencoded')
-    .set('Accept', '*/*')
-    .set('Cache-Control', 'max-age=0')
-    .set('Expect', '100-continue')
-    // .set()
-    .end((err, res) => {
-      if (err) {
-        logger.error('模拟登陆图书馆失败\n', err);
+    .get(website.url.home)
+    .end((errHome, resHome) => {
+      if (errHome) {
+        logger.error('抓取图书馆首页失败\n', errHome);
         return callback({
           code: 1016,
           error: '模拟登陆图书馆失败',
-          detail: err,
+          detail: errHome,
         });
       }
-      logger.debug('res.headers: \n', res.headers, '\n', res.header);
-      logger.debug('模拟登录 url：', `${website.url.login}`);
-      // 判断是否登录成功
-      // 如果 res.redirects.length > 0，则说明登录成功
-      logger.debug('redirect: \n', res.redirects);
-      if (res.redirects.length !== 1) {
-        return callback({
-          code: 1016,
-          error: '模拟登陆图书馆失败，可能是学号或密码错误',
-        });
-      }
-      const redirect = res.redirects[0];
-      // return callback({ err });
+      // logger.debug(resHome);
+      logger.debug('res.headers: \n', resHome.headers);
+      logger.debug('res.header: ', '\n', resHome.header);
+      const cookie = resHome.headers['set-cookie'];
+
       request
-        .post(redirect)
+        .post(website.url.login)
         .send(data)
         .set('Content-Type', 'application/x-www-form-urlencoded')
-        .set('Accept', '*/*')
-        .set('Cache-Control', 'max-age=0')
-        .end((errs, ress) => {
-          logger.debug('redirect...\n');
-          // logger.debug(ress);
-          logger.debug('redirect: \n', ress.redirects);
-          logger.debug(errs);
-          logger.debug('header:\n ', ress.headers, '\n', ress.header);
-          // const cookie = res.header['set-cookie'];
-          // logger.debug('cookie:\n ', cookie);
-          // return callback(null, cookie);
-          return callback({ err });
+        .set('Cookie', cookie)
+        .end((error, result) => {
+          if (error) {
+            logger.error('模拟登陆图书馆失败\n', error);
+            return callback({
+              code: 1017,
+              error: '模拟登陆图书馆失败',
+              detail: error,
+            });
+          }
+          // logger.debug(result);
+          const textStart = result.text.indexOf('<body');
+          const textEnd = result.text.indexOf('</body');
+          const text = result.text.substring(textStart, textEnd);
+          if (text.indexOf(website.errorText.account) !== -1) {
+            // 模拟登陆图书馆失败，学号或密码错误
+            return callback({
+              code: 1018,
+              error: '模拟登陆图书馆失败，学号或密码错误',
+            });
+          }
+          return callback(null, cookie);
         });
     });
 }
