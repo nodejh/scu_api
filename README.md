@@ -78,7 +78,7 @@ $ curl localhost:3000/api/login/zhjw -c ./cookie.txt -d 'number=00000000000000&p
 	"code": 0,
 	"message": "登录图书馆系统成功",
 	"key": "xxxxxxxxxxxx",
-	"token": "11732eda29f44b90363d18d504dacd614bda49a6fbd7c47df82005360698153f6b295f76cc07ad8cd3656c8265907d270f7c0c7b74ebd04a73a7f0f7289d42de26836d8b40d0a99e38ede815e26b74a0176745d47c2bc75551ca962af2eff9543156bf9ef3f6ab02b958d571192051a7fa6eca07777dc6422b707e97e0495e56689ad31c5d1a4c36a46e6d364d099fda9884f29a5b5fad0daac10018a42f10dc7f5a4e1bbdaa4a1642ac78bdc5375a5634dd008e6dc244a6f7ee79698ba74effb861b4f7b3a9639ece859cbfc2fdff07c892ef450f204903a23ae2065780c5c10afcd8beb56d8b6ed422bc3bed327c898d9daee9db63b19b7a147822364af9e7729a4877ddaeaef87ca804d4be42ce81d3ce60cbaa0c2465efdaa0652849c407acebde9b483fa49038f5c8a117412b96b1af2c323286a2b07db32f8ce729d4149b8be6a23544e3b73acc1aa2f0c8a623e645ab17d10c46d364f4d0edbec3e11cbf65ae9b31a9efc12d9bb6a816871dc05ed9a22bdd7564fbc426f0a4f764464dee83601d1afd1f48bfc7fa8d4e38731c7e245f34ca405045ca5c0abec12c39abdbdcc9e3bb648f1b59c7c6a490c5a2a73db486fd2a2b6df1da455eb62532b8394229ee63a3f8885f6cc8caf5562ba57843c1ea2bb1e9948c0c8b75c79f5a996252aab30497e30d6b5ebaefb7e3942a7fd8549c159f788a456c3b40128619f1e258d1e487a8a88964300a96bdd36568239461e4ad6dedf71d23a1cea6ff48e55d2e5adbf2d55eea4aef92b9af36df048bc969b129a5086f729a42ed4b250fe706c3bdc6a59d0c4a6832ebb9ca4a65b2ea7c8d4829"
+	"token": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 }
 ```
 
@@ -118,6 +118,20 @@ $ curl localhost:3000/api/login/zhjw -c ./cookie.txt -d 'number=00000000000000&p
 }
 ```
 
+**续借一本图书**
+
++ METHOD:  GET
++ URL:     /lib/renew/one?key=[key]&token=[token]&barCode=[barCode]&borId=[borId]
+
+`[barCode]` 和 `[borId]` 为图书列表中 `books` 对象的 `barCode` 和 `borId` 属性。
+
+
+```
+{
+	"code": 1040,
+	"error": " 续借操作不成功,原因是：已达到续借限制. - 已续借次数: 03 限制次数: 02. "
+}
+```
 
 
 #### 获取课表
