@@ -30,15 +30,16 @@ const config = {
       home: 'http://m.5read.com/395',
       // 登陆 URL
       login: 'http://mc.m.5read.com/irdUser/login/opac/opacLogin.jspx',
-      // 查看借阅列表菜单
-      showScribleList: 'http://mc.m.5read.com/ird/scribe/showScribeList.jspx',
       // 借阅列表
       books: 'http://mc.m.5read.com/cmpt/opac/opacLink.jspx?stype=1',
+      // 续借链接前缀  barcode=xxxxx&bor_id=xxxxx
+      renewLinkPrefix: 'http://202.115.54.52:90/sms/opac/user/renew.action?xc=5',
     },
     errorText: {
       account: '用户名或密码错误',
       emptyPassword: '借阅证密码不能为空',
       emptyNumber: '借阅证号不能为空',
+      cookieTips: '请确认您的浏览器Cookie开启和正常访问移动图书馆首页',
     },
   },
 };

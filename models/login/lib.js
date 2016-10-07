@@ -1,15 +1,13 @@
-//  ===========================
+// ============================
 // 模拟登录图书馆
 // ============================
 const request = require('request');
-const charset = require('superagent-charset');
 const regexp = require('./../../libs/regexp');
 const log4js = require('./../../conf/log4js');
 const website = require('./../../conf/website').lib;
 
 
 const logger = log4js.getLogger('/models/loginLib');
-charset(request);
 
 
 /**

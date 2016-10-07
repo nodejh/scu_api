@@ -85,8 +85,38 @@ $ curl localhost:3000/api/login/zhjw -c ./cookie.txt -d 'number=00000000000000&p
 
 #### 抓取网页内容
 
+在抓取需要登录后蔡恩感访问的页面之前，需要先登录以获取 `key` 和 `token`。
+
+每次请求均需要带上 `key` 和 `token` 参数。
+
 **获取图书借阅列表**
 
++ METHOD:  GET
++ URL:     /lib/books_lend?key=[key]&password=[token]
+
+将 `[key]` 和 `[token]` 替换为模拟登录后返回的 `key` 和 `token`。不包含 `[` `]`。
+
+```
+{
+	"code": 0,
+	"data": {
+		"books": {
+			"booksNumber": 1,
+			"books": [
+				{
+					"author": "李刚",
+					"name": "疯狂Swift讲义",
+					"expiredate": "20161010",
+					"libraryBranch": "JZLKS",
+					"number": "TP312SW/4072",
+					"borId": "U13014748",
+					"barCode": "90577318"
+				}
+			]
+		}
+	}
+}
+```
 
 
 
@@ -275,3 +305,6 @@ $ curl -b ./cookie.txt localhost:3000/api/get_curriculums
 + 1022 获取图书借阅列表URL传入key参数错误
 + 1023 获取图书借阅列表URL传入token参数错误
 + 1024 获取图书借阅列表传入参数错误
++ 1025 获取图书借阅列表失败
++ 1026 获取图书借阅列表失败，响应的状态码错误
++ 1027 移动图书馆系统cookie信息过期，请重新登录

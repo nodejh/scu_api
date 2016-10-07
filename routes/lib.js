@@ -6,8 +6,9 @@ const config = require('./../conf/config');
 const log4js = require('./../conf/log4js');
 const login = require('./../models/login/lib');
 const encrypt = require('./../libs/encrypt');
-const booksLend = require('./../models/fetch/booksLend');
 const regexp = require('./../libs/regexp');
+const booksLend = require('./../controller/lib/booksLend');
+
 
 const logger = log4js.getLogger('/routes/lib');
 const router = new express.Router();
@@ -61,15 +62,15 @@ router.get('/lib/books_lend', (req, res) => {
     });
   }
   const auth = { key, token };
-  booksLend(auth, (error, data) => {
+  booksLend(auth, (error, books) => {
     if (error) {
-      return res.json({ error });
+      logger.debug(error);
+      return res.json(error);
     }
-    return res.json({
+    logger.debug('books: ', books);
+    res.json({
       code: 0,
-      data: {
-        books: data,
-      },
+      data: books,
     });
   });
 });
