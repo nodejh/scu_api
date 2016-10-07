@@ -1,5 +1,6 @@
 // 和爬取网站相关的配置，不需要修改
 const config = {
+  // 教务系统相关配置
   zhjw: {
     url: {
       // 教务系统登陆 URL
@@ -21,16 +22,23 @@ const config = {
       database: '数据库忙请稍候再试',
     },
   },
+  // 移动图书馆系统相关配置
   lib: {
     schoolid: 395,
     url: {
       // 图书馆手机首页
       home: 'http://m.5read.com/395',
-      // 图书馆手机也登陆页 URL
+      // 登陆 URL
       login: 'http://mc.m.5read.com/irdUser/login/opac/opacLogin.jspx',
+      // 查看借阅列表菜单
+      showScribleList: 'http://mc.m.5read.com/ird/scribe/showScribeList.jspx',
+      // 借阅列表
+      books: 'http://mc.m.5read.com/cmpt/opac/opacLink.jspx?stype=1',
     },
     errorText: {
       account: '用户名或密码错误',
+      emptyPassword: '借阅证密码不能为空',
+      emptyNumber: '借阅证号不能为空',
     },
   },
 };

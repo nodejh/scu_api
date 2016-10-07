@@ -31,8 +31,9 @@ app.use(session({
 app.use(express.static(path.join(__dirname, 'public')));
 
 
-app.use('/api', apiZhjw);
-app.use('/api', apiLib);
+// 版本 1.0
+app.use('/api/v1', apiZhjw);
+app.use('/api/v1', apiLib);
 
 
 // catch 404 and forward to error handler

@@ -17,6 +17,7 @@
     "log": "^1.4.0",
     "log4js": "^0.6.38",
     "morgan": "~1.6.1",
+    "request": "^2.75.0",
     "serve-favicon": "~2.3.0",
     "superagent": "^2.3.0",
     "superagent-charset": "^1.1.1"
