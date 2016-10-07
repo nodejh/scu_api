@@ -40,6 +40,8 @@ const config = {
       emptyPassword: '借阅证密码不能为空',
       emptyNumber: '借阅证号不能为空',
       cookieTips: '请确认您的浏览器Cookie开启和正常访问移动图书馆首页',
+      // 续借操作不成功,原因是：...
+      renewError: '续借操作不成功',
     },
   },
 };

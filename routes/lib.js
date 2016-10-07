@@ -8,7 +8,7 @@ const login = require('./../models/login/lib');
 const encrypt = require('./../libs/encrypt');
 const regexp = require('./../libs/regexp');
 const booksLend = require('./../controller/lib/booksLend');
-
+const bookRenew = require('./../controller/lib/bookRenew');
 
 const logger = log4js.getLogger('/routes/lib');
 const router = new express.Router();
@@ -74,5 +74,55 @@ router.get('/lib/books_lend', (req, res) => {
     });
   });
 });
+
+
+/**
+ * 续借某一本图书
+ */
+router.get('/lib/renew/one', (req, res) => {
+  const key = req.query.key;
+  const token = req.query.token;
+  const barCode = req.query.barCode;
+  const borId = req.query.borId;
+  if (!key) {
+    return res.json({
+      code: 1028,
+      error: '续借图书URL传入key参数错误',
+    });
+  }
+  if (!token) {
+    return res.json({
+      code: 1029,
+      error: '续借图书传入token参数错误',
+    });
+  }
+  if (!barCode) {
+    return res.json({
+      code: 1030,
+      error: '续借图书传入barCode参数错误',
+    });
+  }
+  if (!borId) {
+    return res.json({
+      code: 1031,
+      error: '续借图书传入borId参数错误',
+    });
+  }
+  const auth = { key, token };
+  const params = { barCode, borId };
+  bookRenew(auth, params, (error) => {
+    if (error) {
+      logger.error('续借图书失败: ', error);
+      return res.json(error);
+    }
+    res.json({
+      code: 0,
+      message: '续借图书成功',
+      barCode,
+      borId,
+    });
+  });
+});
+
 
 module.exports = router;
