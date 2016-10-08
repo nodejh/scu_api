@@ -1,7 +1,7 @@
 // 续借图书
-const fetchBookRenew = require('./../../models/fetch/bookRenew');
-const parseBookRenew = require('./../../models/parse/bookRenew');
-const log4js = require('./../../conf/log4js');
+const fetchBookRenew = require('./../models/fetch/bookRenew');
+const parseBookRenew = require('./../models/parse/bookRenew');
+const log4js = require('./../conf/log4js');
 
 
 const logger = log4js.getLogger('/controller/lib/bookRenew');

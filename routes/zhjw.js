@@ -7,7 +7,7 @@ const log4js = require('./../conf/log4js');
 const regexp = require('./../libs/regexp');
 const login = require('./../models/login/zhjw');
 const encrypt = require('./../libs/encrypt');
-const getCurriculums = require('./../models/getCurriculums');
+const getCurriculums = require('./../controller/getCurriculums');
 const getGrades = require('./../models/getGrades');
 
 
@@ -47,20 +47,31 @@ router.get('/login/zhjw', (req, res) => {
 /**
  * 获取课表
  */
-router.get('/get_curriculums', (req, res) => {
-  if (!req.session.cookieZhjw) {
-    return res.json({ code: 1010, error: '尚未登陆' });
-  }
-  const cookie = req.session.cookieZhjw;
-  getCurriculums(cookie, (error, data) => {
-    if (error) {
-      logger.error('获取课表失败\n', error);
-      return res.json({ error });
-    }
+router.get('/zhjw/curriculums', (req, res) => {
+  const key = req.query.key;
+  const token = req.query.token;
+  if (!key) {
     return res.json({
+      code: 1049,
+      error: '获取课表URL传入key参数错误',
+    });
+  }
+  if (!token) {
+    return res.json({
+      code: 1050,
+      error: '获取课表URL传入token参数错误',
+    });
+  }
+  const auth = { key, token };
+  getCurriculums(auth, (error, data) => {
+    if (error) {
+      logger.error('获取课表失败: ', error);
+      return res.json(error);
+    }
+    logger.debug('data: ', JSON.stringify(data));
+    res.json({
       code: 0,
-      msg: '获取课表成功',
-      curriculums: data.curriculums,
+      data,
     });
   });
 });

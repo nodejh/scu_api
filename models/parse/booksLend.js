@@ -1,13 +1,13 @@
 // 解析借阅信息页面
 const cheerio = require('cheerio');
 const log4js = require('./../../conf/log4js');
-const checkSpecialText = require('./checkSpecialText');
+const libSpecialText = require('./libSpecialText');
 
 const logger = log4js.getLogger('/models/parse/booksLend');
 
 
 const booksLend = (html, callback) => {
-  const errCookieTips = checkSpecialText.libCookieTips(html);
+  const errCookieTips = libSpecialText.libCookieTips(html);
   logger.debug('errCookieTips: ', errCookieTips);
   if (errCookieTips) {
     return callback(errCookieTips);
@@ -17,10 +17,10 @@ const booksLend = (html, callback) => {
     xmlMode: false,
     lowerCaseTags: false,
   });
-  const bodyStart = html.indexOf('<body');
-  const bodyEnd = html.indexOf('</body');
-  const body = html.substring(bodyStart, bodyEnd);
-  logger.debug(body);
+  // const bodyStart = html.indexOf('<body');
+  // const bodyEnd = html.indexOf('</body');
+  // const body = html.substring(bodyStart, bodyEnd);
+  // logger.debug(body);
   const domBooks = $('.boxBd').find('.sheet');
   const booksNumber = domBooks.length; // 借阅数量
   logger.debug(domBooks.length);

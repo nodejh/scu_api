@@ -79,7 +79,7 @@ TODO：
 + METHOD:  GET
 + URL:     /lib/books_lend?key=[key]&password=[token]
 
-将 `[key]` 和 `[token]` 替换为模拟登录后返回的 `key` 和 `token`。不包含 `[` `]`。
+将 `[key]` 和 `[token]` 替换为模拟登录图书馆系统后返回的 `key` 和 `token`。不包含 `[` `]`。
 
 ```
 {
@@ -119,42 +119,39 @@ TODO：
 ```
 
 
-#### 获取课表
+**获取课表**
+
++ METHOD:  GET
++ URL:     /zhjw/curriculums?token=[token]&key=[key]
+
+将 `[key]` 和 `[token]` 替换为模拟登录教务系统后返回的 `key` 和 `token`。不包含 `[` `]`。
+
 
 ```
-METHOD:  GET
-API:     /api/get_curriculums
-
-
-return:
 {
-  "code": 0,
-  "msg": "获取课表成功",
-  "curriculums": [
-    {
-      "courseNumber":"304093030",    # 课程号
-      "courseName":"海量数据处理与智能决策",    # 课程名
-      "lessonNumber":"01",    # 课序号
-      "credit":"3.0",    #  学分
-      "courseProperty":"必修",    # 课程属性
-      "examDate":"考试",    # 考试类型
-      "teachers":"周颖杰",    # 教师
-      "studyingWays":"正常",    #  修读方式
-      "courseStatus":"置入",    #  选课状态
-      "weeks":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17],    # 周次
-      "week":"4",    # 星期
-      "session":[5, 6, 7],    # 节次
-      "campus":"江安",    # 校区
-      "tachingBuilding":"一教D座",    # 教学楼	 
-      "classroom":"D302"    # 教室
-    },
-    ...
-  ]
+	"code": 0,
+	"data": {
+		"curriculums": [
+			{
+				"courseNumber": "504299010",   # 课程号
+				"courseName": "职业与健康问题专题讲座",  # 课程名
+				"lessonNumber": "02",  # 课序号
+				"credit": "1.0",  # 学分
+				"courseProperty": "",  # 课程属性
+				"examDate": "考查",  # 考试类型
+				"teachers": "张浩 王津涛 吴媚",  # 教师
+				"studyingWays": "正常",  # 修读方式
+				"courseStatus": "选中",  # 选课状态
+				"weeks": [9, 10, 11, 12, 13, 14],  # 周次
+				"week": [],  # 星期
+				"session": ["10", "12"],  # 节次
+				"campus": "江安",  # 校区
+				"tachingBuilding": "一教B座",   # 教学楼	 
+				"classroom": "B104"  # 教室
+			}
+		]
+	}
 }
-
-
-TEST:
-$ curl -b ./cookie.txt localhost:3000/api/get_curriculums
 ```
 
 #### 成绩查询(含绩点计算)
@@ -323,3 +320,12 @@ $ curl -b ./cookie.txt localhost:3000/api/get_curriculums
 + 1041 登录教务系统URL传入number格式错误
 + 1042 登录教务系统URL传入password格式错误
 + 1043 模拟登陆教务系统失败，响应头状态码不是200
++ 1044 获取课表传入参数错误
++ 1045 获取课表传入key参数错误
++ 1046 获取课表传入token参数错误
++ 1047 获取课表失败
++ 1048 获取课表失败，返回的状态码不是200
++ 1049 获取课表URL传入key参数错误
++ 1050 获取课表URL传入token参数错误
++ 1051 教务系统cookie信息过期，请重新登录
++ 1052 数据库忙请稍候再试

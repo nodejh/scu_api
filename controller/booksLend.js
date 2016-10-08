@@ -1,7 +1,7 @@
 // 借阅列表
-const fetchBooksLend = require('./../../models/fetch/booksLend');
-const parseBooksLend = require('./../../models/parse/booksLend');
-const log4js = require('./../../conf/log4js');
+const fetchBooksLend = require('./../models/fetch/booksLend');
+const parseBooksLend = require('./../models/parse/booksLend');
+const log4js = require('./../conf/log4js');
 
 
 const logger = log4js.getLogger('/controller/lib/booksLend');

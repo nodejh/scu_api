@@ -7,8 +7,8 @@ const log4js = require('./../conf/log4js');
 const login = require('./../models/login/lib');
 const encrypt = require('./../libs/encrypt');
 const regexp = require('./../libs/regexp');
-const booksLend = require('./../controller/lib/booksLend');
-const bookRenew = require('./../controller/lib/bookRenew');
+const booksLend = require('./../controller/booksLend');
+const bookRenew = require('./../controller/bookRenew');
 
 const logger = log4js.getLogger('/routes/lib');
 const router = new express.Router();

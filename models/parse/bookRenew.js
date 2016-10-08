@@ -1,7 +1,7 @@
 // 解析续借图书页面
 const cheerio = require('cheerio');
 const log4js = require('./../../conf/log4js');
-const checkSpecialText = require('./checkSpecialText');
+const libSpecialText = require('./libSpecialText');
 const website = require('./../../conf/website').lib;
 
 
@@ -16,7 +16,7 @@ const logger = log4js.getLogger('/models/parse/bookRenew');
  * @return {object}   错误消息
  */
 const bookRenew = (html, callback) => {
-  const errCookieTips = checkSpecialText.libCookieTips(html);
+  const errCookieTips = libSpecialText.libCookieTips(html);
   logger.debug('errCookieTips: ', errCookieTips);
   if (errCookieTips) {
     return callback(errCookieTips);
