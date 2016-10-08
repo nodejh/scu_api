@@ -1,6 +1,6 @@
 ## SCU API
 
-四川大学校园 API，具有登录四川大学教务系统、图书馆系统，获取个人课表、个人信息，获取个人成绩、计算绩点等功能。旨在方便开发者分析利用教务系统。
+四川大学校园 API，具有登录四川大学教务系统、图书馆系统，获取个人课表、个人信息，获取个人成绩、计算绩点、图书续借等接口，可以方便开发者对教务系统、图书馆等网站进行分析处理。
 
 
 ## Quick Start
@@ -13,7 +13,7 @@ $ npm start
 ```
 
 
-## API 详细说明及使用方法
+## API 简介
 
 已实现 API：
 
@@ -21,48 +21,39 @@ $ npm start
 + 获取课表
 + 成绩查询(含绩点计算)
 
-
 TODO：
 
 + 考表查询
-+ 借阅图书查询及图书续借
-+ (一键评教)
-
-API 主要分为两大类，模拟登录和信息抓取。
++ 一键评教
 
 所有 API 路径都以 `${host}/api/v1` 开头。`v1` 表示版本号 Version 1。如模拟登录教务系统，则路径为 `${host}/api/v1/login/zhjw`。
 
 + 若在本地启动项目，则 `host` 为 `http://localhost:3000`
 + 若使用公开 API，则 `host` 为 `http://scuapi.nodejh.com`
-+ 若是在自己的服务器上部署，则 `host` 为对应的 IP 或域名
++ 若是在自己的服务器上部署，则 `host` 为对应的 IP 地址或域名
 
+在抓取需要登录后才能访问的页面之前，需要先登录以获取 `key` 和 `token`。每次请求均需要带上 `key` 和 `token` 参数。
 
-#### 模拟登录
-
+## 使用方法
 
 **模拟登录教务系统**
 
++ METHOD:  GET
++ URL:     /login/zhjw?number=[学号]&password=[密码]
+
+将 `[学号]` 和 `[密码]` 替换为正确的学号密码（不包含`[` `]`）。
+
+模拟登录成功后，返回的状态码 `code` 为 `0`，同时会返回密钥 `key` 和 `token`。之后每次向图书馆系统中的网页发起请求时，必须带上 `key` 和 `token` 参数。返回参数具体内容如下：
+
 
 ```
-METHOD:  POST
-API:     /api/login/zhjw
-
-parameters:
 {
-  number: '000000000000',
-  password: '000000',
+	"code": 0,
+	"msg": "登录教务系统成功",
+	"key": "xxxxxxxxxxxx",
+	"token": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 }
-
-return:
-{
-  "code":0,
-  "msg":"登录成功"
-}
-
-TEST:
-$ curl localhost:3000/api/login/zhjw -c ./cookie.txt -d 'number=00000000000000&password=000000'
 ```
-
 
 **模拟登录图书馆**
 
@@ -82,12 +73,6 @@ $ curl localhost:3000/api/login/zhjw -c ./cookie.txt -d 'number=00000000000000&p
 }
 ```
 
-
-#### 抓取网页内容
-
-在抓取需要登录后蔡恩感访问的页面之前，需要先登录以获取 `key` 和 `token`。
-
-每次请求均需要带上 `key` 和 `token` 参数。
 
 **获取图书借阅列表**
 
