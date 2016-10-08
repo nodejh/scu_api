@@ -3,6 +3,7 @@
 // ============================
 const request = require('request');
 const regexp = require('./../../libs/regexp');
+const config = require('./../../conf/config');
 const log4js = require('./../../conf/log4js');
 const website = require('./../../conf/website').lib;
 
@@ -106,6 +107,7 @@ const login = (number, password, callback) => {
       headers: {
         Cookie: cookieHome,
         'Content-Type': 'application/x-www-form-urlencoded',
+        'User-Agent': config.crawler['User-Agent'],
       },
       method: 'POST',
     };

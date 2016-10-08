@@ -2,8 +2,11 @@
 // 教务系统 API
 // ======================
 const express = require('express');
+const config = require('./../conf/config');
 const log4js = require('./../conf/log4js');
+const regexp = require('./../libs/regexp');
 const login = require('./../models/login/zhjw');
+const encrypt = require('./../libs/encrypt');
 const getCurriculums = require('./../models/getCurriculums');
 const getGrades = require('./../models/getGrades');
 
@@ -15,18 +18,28 @@ const router = new express.Router();
 /**
  * 模拟登陆教务系统
  */
-router.post('/login/zhjw', (req, res) => {
-  const number = req.body.number;
-  const password = req.body.password;
+router.get('/login/zhjw', (req, res) => {
+  const number = req.query.number;
+  const password = req.query.password;
+  // 验证 number
+  logger.debug('number && password\n', number, password);
+  if (!regexp.number.test(number)) {
+    return res.json({ code: 1041, error: '登录教务系统URL传入number格式错误' });
+  }
+  // 验证 password
+  if (!regexp.number.test(password)) {
+    return res.json({ code: 1042, error: '登录教务系统URL传入password格式错误' });
+  }
   login(number, password, (error, cookie) => {
     if (error) {
       logger.error('模拟登陆教务系统失败\n', error);
-      return res.json({ error });
+      return res.json(error);
     }
-
-    req.session.cookieZhjw = cookie;
-    logger.debug('session\n', req.session);
-    return res.json({ code: 0, msg: '登录教务系统成功' });
+    logger.debug('cookie: ', cookie);
+    const key = encrypt.getRandomKey(config.encrypt.size);
+    const algorithm = config.encrypt.algorithm;
+    const token = encrypt.cipher(algorithm, key, cookie);
+    return res.json({ code: 0, msg: '登录教务系统成功', key, token });
   });
 });
 

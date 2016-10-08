@@ -58,6 +58,7 @@ const fetchBooksLend = (auth, callback) => {
     url: website.url.books,
     headers: {
       Cookie: cookie,
+      'User-Agent': config.crawler['User-Agent'],
     },
   };
 

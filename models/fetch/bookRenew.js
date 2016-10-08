@@ -82,6 +82,7 @@ const bookRenew = (auth, params, callback) => {
     url: `${urlPrefix}&barcode=${barCode}&bor_id=${borId}`,
     headers: {
       Cookie: cookie,
+      'User-Agent': config.crawler['User-Agent'],
     },
   };
   logger.debug('url: ', `${urlPrefix}&barcode=${barCode}&bor_id=${borId}`);

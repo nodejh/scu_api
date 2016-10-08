@@ -335,3 +335,6 @@ $ curl -b ./cookie.txt localhost:3000/api/get_curriculums
 + 1038 续借图书失败
 + 1039 续借图书失败
 + 1040 续借操作不成功
++ 1041 登录教务系统URL传入number格式错误
++ 1042 登录教务系统URL传入password格式错误
++ 1043 模拟登陆教务系统失败，响应头状态码不是200
