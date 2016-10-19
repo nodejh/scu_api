@@ -15,7 +15,7 @@ const logger = log4js.getLogger('/models/fetch/bookRenew');
  * 判断传入的参数是否正确
  * @method checkParams
  * @param  {object}    auth  认证信息，{key,token}
- * @param  {object}    auth  图书参数，{barCode,borId}
+ * @param  {object}    params  图书参数，{barCode,borId}
  * @return {object}    null/错误信息
  */
 const checkParams = (auth, params) => {
