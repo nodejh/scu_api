@@ -2,7 +2,7 @@
 // 图书借阅列表
 // ====================
 const request = require('request');
-const encrypt = require('./../../libs/encrypt');
+const encrypt = require('./../encrypt');
 const config = require('./../../conf/config');
 const log4js = require('./../../conf/log4js');
 const website = require('./../../conf/website').lib;

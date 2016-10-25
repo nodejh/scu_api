@@ -1,3 +1,7 @@
+// ==============================================
+// 根据成绩计算集点
+// ==============================================
+
 // const obligatory
 const STRING_OBLIGATORY = '必修';
 const REG_EXP_GRADE = /^(\d{1,4}\.\d{1,3}|\d{1,4})$/;
@@ -5,14 +9,19 @@ const REG_EXP_GRADE = /^(\d{1,4}\.\d{1,3}|\d{1,4})$/;
 
 /**
  * 保留小数点
+ * @param {number} float 需要保留小数点的数
+ * @param {number} position 需要保留的小数点长度
+ * @returns {number} 保留小数点后的数
  */
-const fomatFloat = function (number, position) {
-  return Math.round(number * Math.pow(10, position)) / Math.pow(10, position);
+const formatFloat = function (float, position) {
+  return Math.round(float * Math.pow(10, position)) / Math.pow(10, position);
 };
 
 
 /**
- * 转换成绩
+ * 将不规则的成绩转化为数字
+ * @param {number} grade
+ * @returns {*} 转换后的成绩
  */
 const changeGrade = function (grade) {
   if (REG_EXP_GRADE.test(grade)) {
@@ -36,8 +45,10 @@ const changeGrade = function (grade) {
 
 
 /**
- * 转换学分
+ * 学分转换
  * 形势与政策学分为 0.25
+ * @param {number} credit  成绩
+ * @returns {number} 学分
  */
 const changeCredit = function (credit) {
   if (parseFloat(credit) !== 0) {
@@ -49,6 +60,8 @@ const changeCredit = function (credit) {
 
 /**
  * 将成绩转换为对应的绩点
+ * @param {number} grade  成绩
+ * @returns {number}
  */
 const changeGradeToPoint = function (grade) {
   const newGrade = changeGrade(grade);
@@ -74,20 +87,27 @@ const changeGradeToPoint = function (grade) {
 };
 
 
-// const isOBLIGATORY function
+/**
+ * 判断是否是必须
+ * @param {string} string  选修／必修字符串
+ * @returns {boolean}
+ */
 const isObligatory = function (string) {
-  if (string === STRING_OBLIGATORY) {
-    return true;
-  }
-  return false;
+  return string === STRING_OBLIGATORY;
 };
 
 
 /**
  * 计算绩点、平均分
- * 传入一个对象，对象里面是包含绩点、成绩、课程属性的一个数组
+ * @param {Array} grades  对象，对象里面是包含绩点、成绩、课程属性的一个数组
+ * @returns {object} {averageGpa: number,
+ *            averageGrade: number,
+ *            averageGpaObligatory: number,
+ *            averageGradeObligatory: number,
+ *            sumCredit: number,
+ *            sumCreditObligatory: number}
  */
-const caculate = function (grades) {
+const calculateGpa = function (grades) {
   let sumCredit = 0; // 所有学分之和
   let sumPointMultiplyCredit = 0; // 所有绩点 * 课程学分之和
   let sumGradeMultiplyCredit = 0; // 所有成绩 * 课程成绩之和
@@ -113,10 +133,10 @@ const caculate = function (grades) {
   // console.log('sumPointMultiplyCredit: ', sumPointMultiplyCredit);
   // console.log('sumGradeMultiplyCredit: ', sumGradeMultiplyCredit);
   return {
-    averageGpa: fomatFloat(sumPointMultiplyCredit / sumCredit, 3),
-    averageGrade: fomatFloat(sumGradeMultiplyCredit / sumCredit, 3),
-    averageGpaObligatory: fomatFloat(sumPointMultiplyCreditObligatory / sumCreditObligatory, 3),
-    averageGradeObligatory: fomatFloat(sumGradeMultiplyCreditObligatory / sumCreditObligatory, 3),
+    averageGpa: formatFloat(sumPointMultiplyCredit / sumCredit, 3),
+    averageGrade: formatFloat(sumGradeMultiplyCredit / sumCredit, 3),
+    averageGpaObligatory: formatFloat(sumPointMultiplyCreditObligatory / sumCreditObligatory, 3),
+    averageGradeObligatory: formatFloat(sumGradeMultiplyCreditObligatory / sumCreditObligatory, 3),
     sumCredit,
     sumCreditObligatory,
   };
@@ -125,5 +145,5 @@ const caculate = function (grades) {
 
 module.exports = {
   changeGradeToPoint,
-  caculate,
+  calculateGpa,
 };

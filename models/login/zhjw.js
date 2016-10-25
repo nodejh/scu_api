@@ -3,7 +3,7 @@
 // ============================
 const request = require('request');
 const iconv = require('iconv-lite');
-const regexp = require('./../../libs/regexp');
+const regexp = require('./../regexp');
 const config = require('./../../conf/config');
 const log4js = require('./../../conf/log4js');
 const website = require('./../../conf/website').zhjw;

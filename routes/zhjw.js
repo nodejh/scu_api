@@ -4,9 +4,9 @@
 const express = require('express');
 const config = require('./../conf/config');
 const log4js = require('./../conf/log4js');
-const regexp = require('./../libs/regexp');
+const regexp = require('./../models/regexp');
 const login = require('./../models/login/zhjw');
-const encrypt = require('./../libs/encrypt');
+const encrypt = require('./../models/encrypt');
 const getCurriculums = require('./../controller/getCurriculums');
 const getGrades = require('./../models/getGrades');
 

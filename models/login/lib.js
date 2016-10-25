@@ -2,7 +2,7 @@
 // 模拟登录图书馆
 // ============================
 const request = require('request');
-const regexp = require('./../../libs/regexp');
+const regexp = require('./../regexp');
 const config = require('./../../conf/config');
 const log4js = require('./../../conf/log4js');
 const website = require('./../../conf/website').lib;
