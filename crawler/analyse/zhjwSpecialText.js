@@ -1,14 +1,14 @@
 // 解析教务系统所抓取页面的特殊的字符串
 // 如未登录时访问出错的提示，cookie信息过期的提示，服务器错误的提示等
-const website = require('./../../conf/website').zhjw;
-const log4js = require('./../../conf/log4js');
+const website = require('./../../config/website').zhjw;
+const log4js = require('./../../config/log4js');
 
 
-const logger = log4js.getLogger('/models/parse/zhjwSpecialText');
+const logger = log4js.getLogger('/models/analyse/zhjwSpecialText');
 
 
 /**
- * 判断移动图书馆系统是否登录过期
+ * 判断教务系统是否登录过期
  * 判断是否有信息提示(请确认您的浏览器Cookie开启和正常访问移动图书馆首页)
  * 未登录
  * @method cookieTips
