@@ -1,17 +1,19 @@
 // 解析课表页面
 const cheerio = require('cheerio');
-const log4js = require('./../../conf/log4js');
+const log4js = require('./../../config/log4js');
 const zhjwSpecialText = require('./zhjwSpecialText');
 
 const logger = log4js.getLogger('/models/parse/curriculums');
 
 
-const parseCurriculums = (html, callback) => {
+const parseCurriculums = (html) => {
   // logger.debug('html: ', html);
   const errSpecialText = zhjwSpecialText(html);
   logger.debug('errSpecialText: ', errSpecialText);
   if (errSpecialText) {
-    return callback(errSpecialText);
+    return {
+      error: errSpecialText,
+    };
   }
   const $ = cheerio.load(html, {
     ignoreWhitespace: true,
@@ -21,7 +23,7 @@ const parseCurriculums = (html, callback) => {
   const curriculumsTableTr = $('body').find('table[class="titleTop2"]').eq(1).find('.displayTag tr');
   logger.debug('curriculumsTableTr\n', curriculumsTableTr.text());
   const curriculums = [];
-  curriculumsTableTr.each(function (index) {
+  curriculumsTableTr.each(function analyse(index) {
     if (index > 0) {
       // 对一周上两节的课进行处理
       const trLength = $(this).find('td').length;
@@ -145,7 +147,10 @@ const parseCurriculums = (html, callback) => {
     }
   });
   logger.debug('curriculums\n', JSON.stringify(curriculums));
-  return callback(null, { curriculums });
+  return {
+    error: null,
+    curriculums,
+  };
 };
 
 
