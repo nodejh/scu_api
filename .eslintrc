@@ -11,6 +11,6 @@
   "rules": {
     "no-param-reassign": 0,
     "consistent-return": 0,
-    func-names: ["error", "never"]
+    "func-names": ["error", "never"]
   }
 }
