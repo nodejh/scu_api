@@ -6,7 +6,7 @@ const zhjwSpecialText = require('./zhjwSpecialText');
 const logger = log4js.getLogger('/models/parse/curriculums');
 
 
-const parseCurriculums = (html) => {
+const analyseCurriculums = (html) => {
   // logger.debug('html: ', html);
   const errSpecialText = zhjwSpecialText(html);
   logger.debug('errSpecialText: ', errSpecialText);
@@ -154,4 +154,4 @@ const parseCurriculums = (html) => {
 };
 
 
-module.exports = parseCurriculums;
+module.exports = analyseCurriculums;

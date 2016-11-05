@@ -4,11 +4,11 @@ const website = require('./../../config/website').zhjw;
 const log4js = require('./../../config/log4js');
 
 
-const logger = log4js.getLogger('/models/parse/zhjwSpecialText');
+const logger = log4js.getLogger('/models/analyse/zhjwSpecialText');
 
 
 /**
- * 判断移动图书馆系统是否登录过期
+ * 判断教务系统是否登录过期
  * 判断是否有信息提示(请确认您的浏览器Cookie开启和正常访问移动图书馆首页)
  * 未登录
  * @method cookieTips

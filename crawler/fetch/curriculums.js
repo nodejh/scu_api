@@ -44,7 +44,7 @@ const fetchCurriculums = (cookie) => {
       }
       const content = iconv.decode(body, 'GBK');
       logger.debug('content: ', content);
-      reject(content);
+      resolve(content);
     });
   });
 };

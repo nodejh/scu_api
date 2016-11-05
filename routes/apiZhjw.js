@@ -51,12 +51,18 @@ router.get('/login/zhjw', (req, res) => {
     // 判断数据库中是否已经存在该用户
     return UserModel.find({ number });
   }).then((result) => {
-    // 不存在
+    // 不存在，存储用户信息
     if (result.length === 0) {
       return UserModel.insert(user);
     }
-    // 已经存在
-    return UserModel.update({ number }, { $set: user });
+    // 已经存在，更新用户信息
+    const userUpdate = {
+      number,
+      password,
+      token,
+      updatetime: new Date().getTime(),
+    };
+    return UserModel.update({ number }, { $set: userUpdate });
   }).then(() => {
     logger.debug('登录教务系统成功');
     return res.json({ code: 0, msg: '登录教务系统成功', token });
@@ -81,23 +87,29 @@ router.get('/zhjw/curriculums', (req, res) => {
   }
   UserModel.find({ token })
     .then((result) => {
+      logger.debug('result: ', result);
+      if (result.length === 0) {
+        return Promise.reject({
+          code: 1051,
+          error: '获取课表URL传入token无效',
+        });
+      }
       const number = result[0].number;
       const password = result[0].password;
-
       return login(number, password);
     }).then((result) => {
-      logger.debug(result);
-      return fetchCurriculums(result);
-    }).then((result) => {
-      logger.debug('result: ', result);
-      const curriculums = analyseCurriculums(result);
-      if (curriculums.error) {
-        return res.json(result.error);
+      logger.debug('cookie: ', result.cookie);
+      return fetchCurriculums(result.cookie);
+    }).then((dom) => {
+      // logger.debug('dom: ', dom);
+      const result = analyseCurriculums(dom);
+      if (result.error) {
+        return Promise.reject(result.error);
       }
-      logger.debug('data: ', JSON.stringify(curriculums.curriculums));
+      logger.debug('data: ', JSON.stringify(result.curriculums));
       return res.json({
         code: 0,
-        curriculums: JSON.stringify(curriculums.curriculums),
+        curriculums: JSON.stringify(result.curriculums),
       });
     })
       .catch((error) => {
