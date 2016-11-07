@@ -5,13 +5,12 @@ const express = require('express');
 const log4js = require('./../config/log4js');
 const generateToken = require('./../helpers/token').generate;
 const UserModel = require('./../models/user');
-const login = require('./../crawler/fetch/zhjw');
+const login = require('./../crawler/fetch/loginZhjw');
 const fetchCurriculums = require('./../crawler/fetch/curriculums');
 const analyseCurriculums = require('./../crawler/analyse/curriculums');
-// const getGrades = require('./../models/getGrades');
 
 
-const logger = log4js.getLogger('/routes/zhjw');
+const logger = log4js.getLogger('/routes/apiZhjw');
 const router = new express.Router();
 
 

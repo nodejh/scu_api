@@ -1,11 +1,14 @@
 const mongo = require('./../config/mongo');
 
 const User = mongo.model('User', {
-  number: { type: 'string' },
-  password: { type: 'string' },
-  token: { type: 'string' },
-  datetime: { type: 'number' },
+  number: { type: 'string' },  // 学号
+  password: { type: 'string' },  // 教务系统密码
+  password_lib: { type: 'string' },  // 图书馆密码
+  token: { type: 'string' },  // token
+  datetime: { type: 'number' },  // 注册时间
+  updatetime: { type: 'number' },  // 最近登录时间（更新密码时间）
 });
+
 
 module.exports = {
   insert(user) {
