@@ -20,7 +20,7 @@ const router = new express.Router();
 router.get('/login/zhjw', (req, res) => {
   const number = req.query.number;
   const password = req.query.password;
-  const token = generateToken(number + password);
+  const token = generateToken(number);
 
   logger.debug('number && password\n', number, password);
   // 学号和密码校验
@@ -64,7 +64,13 @@ router.get('/login/zhjw', (req, res) => {
     return UserModel.update({ number }, { $set: userUpdate });
   }).then(() => {
     logger.debug('登录教务系统成功');
-    return res.json({ code: 0, msg: '登录教务系统成功', token });
+    return res.json({
+      code: 0,
+      msg: '登录教务系统成功',
+      data: {
+        token,
+      },
+    });
   })
     .catch((error) => {
       logger.debug('error: ', error);
@@ -78,6 +84,7 @@ router.get('/login/zhjw', (req, res) => {
  */
 router.get('/zhjw/curriculums', (req, res) => {
   const token = req.query.token;
+  logger.debug('token: ', token);
   if (!token) {
     return res.json({
       code: 1050,
@@ -96,9 +103,9 @@ router.get('/zhjw/curriculums', (req, res) => {
       const number = result[0].number;
       const password = result[0].password;
       return login(number, password);
-    }).then((result) => {
-      logger.debug('cookie: ', result.cookie);
-      return fetchCurriculums(result.cookie);
+    }).then((cookie) => {
+      logger.debug('cookie: ', cookie);
+      return fetchCurriculums(cookie);
     }).then((dom) => {
       // logger.debug('dom: ', dom);
       const result = analyseCurriculums(dom);
@@ -108,7 +115,9 @@ router.get('/zhjw/curriculums', (req, res) => {
       logger.debug('data: ', JSON.stringify(result.curriculums));
       return res.json({
         code: 0,
-        curriculums: JSON.stringify(result.curriculums),
+        data: {
+          curriculums: JSON.stringify(result.curriculums),
+        },
       });
     })
       .catch((error) => {

@@ -70,7 +70,7 @@ function login(number, password) {
         reject({ code: 1006, error: '学号或密码错误' });
       }
       const cookie = response.headers['set-cookie'].join();
-      resolve({ cookie });
+      resolve(cookie);
     });
   });
 }

@@ -100,6 +100,7 @@ const login = (number, password) => {
         };
         return doLogin(options);
       }).then((cookie) => {
+        logger.debug('cookie: ', cookie);
         resolve(cookie);
       }).catch((error) => {
         reject(error);

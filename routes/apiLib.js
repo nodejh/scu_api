@@ -6,8 +6,8 @@ const log4js = require('./../config/log4js');
 const generateToken = require('./../helpers/token').generate;
 const UserModel = require('./../models/user');
 const login = require('./../crawler/fetch/loginLib');
-// const fetchCurriculums = require('./../crawler/fetch/curriculums');
-// const analyseCurriculums = require('./../crawler/analyse/curriculums');
+const fetchBookLendingList = require('./../crawler/fetch/bookLendingList');
+const analyseBookLendingList = require('./../crawler/analyse/bookLendingList');
 // const getGrades = require('./../models/getGrades');
 
 
@@ -21,8 +21,7 @@ const router = new express.Router();
 router.get('/login/lib', (req, res) => {
   const number = req.query.number;
   const password = req.query.password;
-  const token = generateToken(number + password);
-
+  const token = generateToken(number);
   logger.debug('number && password\n', number, password);
   // 学号和密码校验
   if (!/^\d+$/.test(number)) {
@@ -65,7 +64,11 @@ router.get('/login/lib', (req, res) => {
     return UserModel.update({ number }, { $set: userUpdate });
   }).then(() => {
     logger.debug('登录图书馆系统成功');
-    return res.json({ code: 0, msg: '登录图书馆系统成功', token });
+    return res.json({
+      code: 0,
+      msg: '登录图书馆系统成功',
+      data: { token },
+    });
   })
     .catch((error) => {
       logger.debug('error: ', error);
@@ -75,35 +78,51 @@ router.get('/login/lib', (req, res) => {
 
 
 /**
- * 获取课表
+ * 图书借阅列表
  */
-// router.get('/zhjw/curriculums', (req, res) => {
-//   const key = req.query.key;
-//   const token = req.query.token;
-//   if (!key) {
-//     return res.json({
-//       code: 1049,
-//       error: '获取课表URL传入key参数错误',
-//     });
-//   }
-//   if (!token) {
-//     return res.json({
-//       code: 1050,
-//       error: '获取课表URL传入token参数错误',
-//     });
-//   }
-//   const auth = { key, token };
-//   getCurriculums(auth, (error, data) => {
-//     if (error) {
-//       logger.error('获取课表失败: ', error);
-//       return res.json(error);
-//     }
-//     logger.debug('data: ', JSON.stringify(data));
-//     res.json({
-//       code: 0,
-//       data,
-//     });
-//   });
-// });
+router.get('/lib/book_lending_list', (req, res) => {
+  const token = req.query.token;
+  if (!token) {
+    return res.json({
+      code: 1050,
+      error: '获取图书借阅列表URL传入token参数错误',
+    });
+  }
+  UserModel.find({ token })
+    .then((result) => {
+      logger.debug('result: ', result);
+      if (result.length === 0) {
+        return Promise.reject({
+          code: 1051,
+          error: '获取图书借阅列表URL传入token无效',
+        });
+      }
+      const number = result[0].number;
+      const password = result[0].password_lib;
+      return login(number, password);
+    }).then((cookie) => {
+      // logger.debug('result: ', result);
+      logger.debug('cookie: ', cookie);
+      return fetchBookLendingList(cookie);
+    }).then((dom) => {
+      // logger.debug('dom: ', dom);
+      const result = analyseBookLendingList(dom);
+      if (result.error) {
+        return Promise.reject(result.error);
+      }
+      logger.debug('data: ', JSON.stringify(result.curriculums));
+      return res.json({
+        code: 0,
+        data: {
+          books: JSON.stringify(result.books),
+          number: result.booksNumber,
+        },
+      });
+    })
+      .catch((error) => {
+        logger.error('获取课表失败: ', error);
+        return res.json(error);
+      });
+});
 
 module.exports = router;
