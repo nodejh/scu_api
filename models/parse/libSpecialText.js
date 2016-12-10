@@ -1,7 +1,7 @@
 // 解析图书馆系统所抓取页面的特殊的字符串
 // 如未登录时访问出错的提示，cookie信息过期的提示，服务器错误的提示等
-const website = require('./../../config/website').lib;
-const log4js = require('./../../config/log4js');
+const website = require('./../../conf/website').lib;
+const log4js = require('./../../conf/log4js');
 
 
 const logger = log4js.getLogger('/models/parse/libSpecialText');

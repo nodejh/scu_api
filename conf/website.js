@@ -21,7 +21,6 @@ const config = {
       password: '您的密码不正确，请您重新输入！',
       database: '数据库忙请稍候再试',
       notLogin: '请您登录后再使用',
-      noPermission: '您无权限进行相应操作,请联系管理员',
     },
   },
   // 移动图书馆系统相关配置

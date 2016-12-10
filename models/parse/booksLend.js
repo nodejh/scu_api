@@ -1,17 +1,16 @@
 // 解析借阅信息页面
 const cheerio = require('cheerio');
-const log4js = require('./../../config/log4js');
+const log4js = require('./../../conf/log4js');
 const libSpecialText = require('./libSpecialText');
 
+const logger = log4js.getLogger('/models/parse/booksLend');
 
-const logger = log4js.getLogger('/models/analyse/bookLendingList');
 
-
-const booksLend = (html) => {
+const booksLend = (html, callback) => {
   const errCookieTips = libSpecialText.libCookieTips(html);
   logger.debug('errCookieTips: ', errCookieTips);
   if (errCookieTips) {
-    return { error: errCookieTips };
+    return callback(errCookieTips);
   }
   const $ = cheerio.load(html, {
     ignoreWhitespace: true,
@@ -26,7 +25,7 @@ const booksLend = (html) => {
   const booksNumber = domBooks.length; // 借阅数量
   logger.debug(domBooks.length);
   const books = [];
-  domBooks.each(function domBook() {
+  domBooks.each(function () {
     const barCodeValue = $(this).find('td').eq(5).find('form input')
         .eq(0)
         .attr('value');
@@ -49,11 +48,10 @@ const booksLend = (html) => {
     });
   });
   logger.debug('books: ', books);
-  return {
-    error: null,
+  return callback(null, {
     booksNumber,
     books,
-  };
+  });
 };
 
 
