@@ -4,10 +4,12 @@ const favicon = require('serve-favicon');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
-const session = require('express-session');
 
-const apiZhjw = require('./routes/zhjw');
-const apiLib = require('./routes/lib');
+
+// 教务系统 API
+const apiZhjw = require('./routes/apiZhjw');
+// 图书馆 API
+const apiLib = require('./routes/apiLib');
 
 const app = express();
 
@@ -15,18 +17,12 @@ const app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
+// uncomment after placing your favicon in /public
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(session({
-  secret: 'keyboard cat',
-  cookie: { maxAge: 60000000000000 },
-  proxy: true,
-  resave: true,
-  saveUninitialized: true,
-}));
 app.use(express.static(path.join(__dirname, 'public')));
 
 
@@ -46,6 +42,7 @@ app.use((req, res, next) => {
 
 // development error handler
 // will print stacktrace
+// console.log('env: ', app.get('env'));
 if (app.get('env') === 'development') {
   app.use((err, req, res) => {
     res.status(err.status || 500);
