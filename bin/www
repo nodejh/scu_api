@@ -1,91 +1,104 @@
 #!/usr/bin/env node
 
+
 /**
  * Module dependencies.
  */
-
-const app = require('../app');
-const config = require('../config/config');
-const debug = require('debug')('scu_api_refactor:server');
+const debug = require('debug')('scu_api:server');
 const http = require('http');
 
-/**
- * Get port from environment and store in Express.
- */
+const app = require('./../app');
+const config = require('./../config/config');
+const logger = require('./../helpers/logger');
 
-const port = normalizePort(process.env.PORT || config.port);
-app.set('port', port);
-
-/**
- * Create HTTP server.
- */
-
-const server = http.createServer(app);
-
-/**
- * Listen on provided port, on all network interfaces.
- */
-
-server.listen(port);
-server.on('error', onError);
-server.on('listening', onListening);
 
 /**
  * Normalize a port into a number, string, or false.
+ * @param  {string} val port string
+ * @return {number}     port number
  */
+const normalizePort = (val) => {
+  const thePort = parseInt(val, 10);
 
-function normalizePort(val) {
-  const port = parseInt(val, 10);
-
-  if (isNaN(port)) {
+  if (isNaN(thePort)) {
     // named pipe
     return val;
   }
 
-  if (port >= 0) {
+  if (thePort >= 0) {
     // port number
-    return port;
+    return thePort;
   }
 
   return false;
-}
+};
+
+
+/**
+ * Get port from environment.
+ */
+const port = normalizePort(process.env.PORT || config.port);
+
+
+/**
+ * Create HTTP server.
+ */
+const server = http.createServer(app);
+
 
 /**
  * Event listener for HTTP server "error" event.
+ * @param  {object} error error stack
+ * @return {null}         null
  */
-
-function onError(error) {
+const onError = (error) => {
   if (error.syscall !== 'listen') {
     throw error;
   }
 
   const bind = typeof port === 'string'
-    ? 'Pipe ' + port
-    : 'Port ' + port;
+    ? `Pipe ${port}`
+    : `Port ${port}`;
 
   // handle specific listen errors with friendly messages
   switch (error.code) {
     case 'EACCES':
-      console.error(bind + ' requires elevated privileges');
+      logger.error(`${bind} requires elevated privileges`);
       process.exit(1);
       break;
     case 'EADDRINUSE':
-      console.error(bind + ' is already in use');
+      logger.error(`${bind} is already in use`);
       process.exit(1);
       break;
     default:
       throw error;
   }
-}
+};
+
 
 /**
  * Event listener for HTTP server "listening" event.
+ * @return {null} null
  */
-
-function onListening() {
+const onListening = () => {
   const addr = server.address();
   const bind = typeof addr === 'string'
-    ? 'pipe ' + addr
-    : 'port ' + addr.port;
-  debug('Listening on ' + bind);
-}
+    ? `pipe  ${addr}`
+    : `port ${addr.port}`;
+  debug(`Listening on ${bind}`);
+  logger.info(`Listening on ${bind}`);
+};
+
+
+/**
+ * Store port in Express.
+ */
+app.set('port', port);
+
+
+/**
+ * Listen on provided port, on all network interfaces.
+ */
+server.listen(port);
+server.on('error', onError);
+server.on('listening', onListening);

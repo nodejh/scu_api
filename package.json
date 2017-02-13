@@ -14,10 +14,12 @@
     "express": "~4.13.1",
     "iconv-lite": "^0.4.13",
     "log4js": "^1.0.0",
-    "mongolass": "^2.3.1",
+    "mongolass": "^2.4.1",
+    "mongoose": "^4.8.1",
     "morgan": "~1.6.1",
     "request": "^2.78.0",
-    "serve-favicon": "~2.3.0"
+    "serve-favicon": "~2.3.0",
+    "winston": "^2.3.1"
   },
   "devDependencies": {
     "babel-eslint": "^7.1.0",
